@@ -16,8 +16,17 @@ void main(List<String> arguments) async {
   //   printUsage();
   // }
 
-  var runner = CommandRunner()..addCommand(HelpCommand()); // Create an instance of your new CommandRunner
-  await runner.run(arguments); // Call its run method, awaiting its Future<void>
+  var commandRunner = CommandRunner(
+    onError: (Object error) {
+      if (error is Error) {
+        throw error;
+      }
+      if (error is Exception) {
+        print(error);
+      }
+    },
+  )..addCommand(HelpCommand()); // Create an instance of your new CommandRunner
+  await commandRunner.run(arguments); // Call its run method, awaiting its Future<void>
 }
 
 void printUsage() {
